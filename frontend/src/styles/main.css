@@ -1,0 +1,380 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode so the pre-paint script in index.html and the in-app
+   toggle agree without a flash of the wrong theme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* --------------------------------------------------------------------------
+   Palette
+   --------------------------------------------------------------------------
+   Surfaces and text are semantic variables so the two themes stay in step and
+   components never hard-code a hex value. The brand ramp is an indigo-violet
+   (the "ink" of the product) with an amber "pencil mark" accent — the visual
+   language of sudoku annotation. */
+:root {
+  --surface: #fbfbfd;
+  --surface-raised: #ffffff;
+  --surface-sunken: #f3f3f7;
+  --surface-overlay: #ffffff;
+  --border: #e7e7ee;
+  --border-strong: #d5d5e0;
+  --text: #16161e;
+  --text-muted: #57576b;
+  --text-subtle: #8b8b9e;
+  --ring: #6366f1;
+  --shadow-color: 230 20% 60%;
+}
+
+.dark {
+  --surface: #0a0a11;
+  --surface-raised: #14141d;
+  --surface-sunken: #0e0e16;
+  --surface-overlay: #191924;
+  --border: #262634;
+  --border-strong: #363649;
+  --text: #f3f3f8;
+  --text-muted: #a2a2b8;
+  --text-subtle: #70708a;
+  --ring: #818cf8;
+  --shadow-color: 240 40% 2%;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-sunken: var(--surface-sunken);
+  --color-overlay: var(--surface-overlay);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-subtle: var(--text-subtle);
+}
+
+@theme {
+  --font-sans:
+    'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+  --color-brand-950: #1e1b4b;
+
+  --color-pencil-300: #fcd34d;
+  --color-pencil-400: #fbbf24;
+  --color-pencil-500: #f59e0b;
+  --color-pencil-600: #d97706;
+
+  --radius-card: 1rem;
+  --radius-control: 0.625rem;
+
+  --ease-spring: cubic-bezier(0.34, 1.42, 0.64, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Honour the notch on phones when the form runs full-bleed. */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--ring) 28%, transparent);
+  }
+
+  /* A slim, unobtrusive scrollbar that matches both themes. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--text-subtle);
+    background-clip: content-box;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Components
+   -------------------------------------------------------------------------- */
+@layer components {
+  /* The signature surface: a raised card with a hairline border and a shadow
+     that reads as depth rather than as a drop shadow. */
+  .card {
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow:
+      0 1px 2px -1px hsl(var(--shadow-color) / 0.12),
+      0 2px 8px -2px hsl(var(--shadow-color) / 0.08);
+  }
+
+  .card-hover {
+    transition:
+      transform 0.35s var(--ease-spring),
+      box-shadow 0.35s var(--ease-out-soft),
+      border-color 0.25s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+    box-shadow:
+      0 2px 4px -1px hsl(var(--shadow-color) / 0.14),
+      0 12px 28px -8px hsl(var(--shadow-color) / 0.22);
+  }
+
+  /* The sudoku cell motif, used for the hero, loaders and the inspector. */
+  .sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .sudoku-cell {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    border-radius: 4px;
+    background: var(--surface-sunken);
+    color: var(--text-subtle);
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease,
+      transform 0.4s var(--ease-spring);
+  }
+  /* Thicker rules on the 2x2 box boundaries, as on a real puzzle. */
+  .sudoku-cell[data-box-right='1'] {
+    box-shadow: 2px 0 0 0 var(--border-strong);
+  }
+  .sudoku-cell[data-box-bottom='1'] {
+    box-shadow: 0 2px 0 0 var(--border-strong);
+  }
+
+  /* Ciphertext display. Monospace, wrapped, and selectable but visually quiet. */
+  .cipher {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+
+  .glass {
+    background: color-mix(in oklab, var(--surface-raised) 72%, transparent);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+
+  .focus-ring {
+    transition:
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .focus-ring:focus-within {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 18%, transparent);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Utilities & motion
+   -------------------------------------------------------------------------- */
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility grid-paper {
+  /* A faint grid, echoing graph paper — the surface a puzzle is solved on. */
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cell-pop {
+  0% {
+    transform: scale(0.82);
+    opacity: 0.4;
+  }
+  60% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--ring) 45%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s var(--ease-out-soft) both;
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease both;
+}
+.animate-cell-pop {
+  animation: cell-pop 0.45s var(--ease-spring) both;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2s infinite;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-sunken);
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--surface-raised) 70%, transparent),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+/* Staggered list entrances: set --i on each item. */
+.stagger > * {
+  animation: fade-up 0.5s var(--ease-out-soft) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+/* Route transitions. */
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity 0.24s ease,
+    transform 0.28s var(--ease-out-soft);
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.slide-next-enter-active,
+.slide-next-leave-active,
+.slide-prev-enter-active,
+.slide-prev-leave-active {
+  transition:
+    opacity 0.32s var(--ease-out-soft),
+    transform 0.36s var(--ease-out-soft);
+  position: absolute;
+  inset: 0;
+}
+.slide-next-enter-from {
+  opacity: 0;
+  transform: translateX(38px);
+}
+.slide-next-leave-to {
+  opacity: 0;
+  transform: translateX(-38px);
+}
+.slide-prev-enter-from {
+  opacity: 0;
+  transform: translateX(-38px);
+}
+.slide-prev-leave-to {
+  opacity: 0;
+  transform: translateX(38px);
+}

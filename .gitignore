@@ -1,0 +1,39 @@
+# Build outputs
+/backend/bin/
+/dist/
+/frontend/dist/
+
+# The embedded frontend. Only a marker file is committed, so that a bare
+# `go build` works on a fresh clone (go:embed of a missing directory is a
+# compile error) without shipping build output. Vite recreates the marker after
+# every build; see the keepEmbedDir plugin in frontend/vite.config.ts.
+/backend/internal/webui/dist/*
+!/backend/internal/webui/dist/.gitkeep
+
+# Dependencies
+node_modules/
+
+# Local data and secrets
+*.db
+*.db-wal
+*.db-shm
+.env
+.env.local
+deploy/qrforqa.env
+
+# Tooling
+.DS_Store
+.vite/
+*.log
+coverage/
+
+# Test artifacts
+/frontend/test-results/
+/frontend/playwright-report/
+/frontend/blob-report/
+/frontend/.playwright/
+
+# Machine-local editor/agent settings, never shared
+/.claude/settings.local.json
+/.idea/
+*.swp

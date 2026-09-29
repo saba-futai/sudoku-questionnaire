@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0b12" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+    <meta
+      name="description"
+      content="QRforQA — 数据全程以数独编码形态存储的问卷发布、填写与统计系统。"
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>QRforQA · 数独问卷</title>
+    <script>
+      // Applied before first paint so the theme never flashes. Mirrors the
+      // logic in src/lib/theme.ts.
+      (function () {
+        try {
+          var stored = localStorage.getItem('qrforqa:theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var dark = stored ? stored === 'dark' : prefersDark;
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) {
+          /* private mode: fall back to the light theme */
+        }
+      })();
+    </script>
+  </head>
+  <body class="h-full">
+    <div id="app" class="h-full"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

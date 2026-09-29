@@ -1,0 +1,52 @@
+[Unit]
+Description=QRforQA — sudoku-encoded questionnaire service
+Documentation=https://github.com/SUDOKU-ASCII/sudoku
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=qrforqa
+Group=qrforqa
+WorkingDirectory=/opt/qrforqa
+
+# Secrets live here, not in the repository and not in the unit file.
+EnvironmentFile=/etc/qrforqa/qrforqa.env
+
+ExecStart=/usr/local/bin/qrforqa serve
+Restart=on-failure
+RestartSec=3
+# Give in-flight submissions and large exports time to finish.
+TimeoutStopSec=20
+KillSignal=SIGTERM
+
+# Binding port 80 as a non-root user needs exactly this one capability, and
+# nothing else. The unit therefore never runs as root.
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+
+# 2 GB box: a soft Go heap limit avoids a GC death spiral under load, a lower
+# GC target keeps RSS predictable, and MemoryMax is the hard backstop.
+Environment=GOMEMLIMIT=600MiB
+Environment=GOGC=50
+MemoryMax=900M
+
+# Hardening. The service needs its data directory and nothing else writable.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+LockPersonality=true
+SystemCallArchitectures=native
+ReadWritePaths=/opt/qrforqa
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

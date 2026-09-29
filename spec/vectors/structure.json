@@ -1,0 +1,10 @@
+{
+  "gridCount": 288,
+  "gridsSha256": "2865b433b40cedd051916982f14f4d4bb26680b65070b1d1354cc54e7f778b67",
+  "gridsFirstHex": "01020304030401020201040304030201",
+  "gridsLastHex": "04030201020104030304010201020304",
+  "posSetCount": 1820,
+  "posSetsSha256": "32385ff1df7b77c831a6f5562e9fedd9a27c662a06e6ae6613571c431a1bb005",
+  "posSetsFirstHex": "00010203",
+  "posSetsLastHex": "0c0d0e0f"
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="7" fill="#4f46e5" />
+  <g fill="#ffffff">
+    <!-- 4x4 sudoku, the exact grid the codec enumerates -->
+    <rect x="6" y="6" width="4.4" height="4.4" rx="1.1" />
+    <rect x="12.6" y="6" width="4.4" height="4.4" rx="1.1" opacity="0.55" />
+    <rect x="19.2" y="6" width="4.4" height="4.4" rx="1.1" />
+    <rect x="25.8" y="6" width="0.1" height="4.4" />
+    <rect x="6" y="12.6" width="4.4" height="4.4" rx="1.1" opacity="0.55" />
+    <rect x="12.6" y="12.6" width="4.4" height="4.4" rx="1.1" />
+    <rect x="19.2" y="12.6" width="4.4" height="4.4" rx="1.1" opacity="0.55" />
+    <rect x="6" y="19.2" width="4.4" height="4.4" rx="1.1" />
+    <rect x="12.6" y="19.2" width="4.4" height="4.4" rx="1.1" opacity="0.55" />
+    <rect x="19.2" y="19.2" width="4.4" height="4.4" rx="1.1" />
+  </g>
+  <rect x="6" y="6" width="17.6" height="17.6" rx="1.1" fill="none" stroke="#ffffff" stroke-opacity="0.28" stroke-width="0.9" />
+  <line x1="12" y1="6" x2="12" y2="23.6" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1" />
+  <line x1="18.2" y1="6" x2="18.2" y2="23.6" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1" />
+  <line x1="6" y1="12" x2="23.6" y2="12" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1" />
+  <line x1="6" y1="18.2" x2="23.6" y2="18.2" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1" />
+</svg>
